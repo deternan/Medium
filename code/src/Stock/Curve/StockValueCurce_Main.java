@@ -35,7 +35,7 @@ public class StockValueCurce_Main
 		for (File file : listOfFiles) {
 			//System.out.println(file);
 			// Read articles
-			ReadArticles ra = new ReadArticles(file.toString());
+			ReadArticles ra = new ReadArticles(file);
 		}
 		
 	}

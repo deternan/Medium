@@ -11,6 +11,7 @@ package Stock.Curve;
  */
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 import org.json.JSONArray;
@@ -25,14 +26,18 @@ public class ReadArticles
 	String article_id;
 	String dateStr;
 	
-	public ReadArticles(String filenamePath) throws Exception
+	public ReadArticles(File filenamePath) throws Exception
 	{
-		ReadSourceFile(filenamePath);
+		String fileextension;
+		
+		fileextension = getFileExtension(filenamePath);
+		if(fileextension.equalsIgnoreCase(".json")) {
+			ReadSourceFile(filenamePath.toString());
+		}
 	}
 	
 	private void ReadSourceFile(String filenamePath) throws Exception
 	{
-		System.out.println(filenamePath);
 		String Line = "";
 		FileReader fr = new FileReader(filenamePath);
 		BufferedReader bfr = new BufferedReader(fr);
@@ -57,10 +62,10 @@ public class ReadArticles
 						idTmp = articleobj.getString("article_id");
 							article_id = idTmp;
 							// date
-							if (articleobj.has("data")) {
+							if (articleobj.has("date")) {
 								dateStr = articleobj.getString("date");
 							}
-						System.out.println(article_id+"	"+dateStr);	
+						//System.out.println(article_id+"	"+dateStr);	
 					}
 				}
 			}
@@ -77,4 +82,21 @@ public class ReadArticles
 		return check;
 	}
 
+	private static String getFileExtension(File file) {
+		
+		String extension = "";
+ 
+        try {
+            if (file != null && file.exists()) {
+                String name = file.getName();
+                extension = name.substring(name.lastIndexOf("."));
+            }
+        } catch (Exception e) {
+            extension = "";
+        }
+ 
+        return extension;
+ 
+    }
+	
 }
