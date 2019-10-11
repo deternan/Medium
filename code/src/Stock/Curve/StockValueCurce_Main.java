@@ -21,11 +21,11 @@ import java.util.List;
 public class StockValueCurce_Main 
 {
 	// Articles
-	//private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/Stock data/";
-	private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/test/";
+	private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/Stock data/";
+	//private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/test/";
 	// Date 
 	String startDate = "20180101";
-	String endDate = "20180105";
+	String endDate = "20190731";
 	List<String> datelistArray = new ArrayList<String>();
 	List<Integer> dateMesCountArrayTmp;
 	List<Integer> dateMesCountArray = new ArrayList<Integer>();
@@ -75,7 +75,7 @@ public class StockValueCurce_Main
 		System.out.println("-------------------------------");
 		for(int i=0; i<datelistArray.size(); i++)
 		{
-			System.out.println(i+"	"+datelistArray.get(i)+"	"+dateMesCountArray.get(i));
+			System.out.println(datelistArray.get(i)+"	"+dateMesCountArray.get(i));
 		}
 	}
 	
