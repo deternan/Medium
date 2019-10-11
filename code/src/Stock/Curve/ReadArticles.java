@@ -3,7 +3,7 @@ package Stock.Curve;
 /*
  * Articles Parsing
  * version: October 09, 2019 00:09 AM
- * Last revision: October 09, 2019 06:54 AM
+ * Last revision: October 11, 2019 07:56 PM
  * 
  * Author : Chao-Hsuan Ke
  * E-mail : phelpske.dev at gmail dot com
@@ -13,12 +13,10 @@ package Stock.Curve;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.DateTools.Resolution;
@@ -27,17 +25,17 @@ import org.json.JSONObject;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
+import org.json.simple.parser.JSONParser;
 
 public class ReadArticles 
 {
-	// Date 
-	String startDate = "20180101";
-	String endDate = "20190731";
-	Vector datelistVec = new Vector();
+	
+	List<String> datelistArray;
+	List<Integer> dateMesCountArrayTmp = new ArrayList<Integer>();
 	
 	String article_id;
 	String dateStr;
+	int mesCount;
 	
 	Date articleDate;
 	Date standardDate;
@@ -49,65 +47,33 @@ public class ReadArticles
 	String monthStr;
 	String dayStr;
 	
-	public ReadArticles(File filenamePath) throws Exception
+	// Parsing
+	JSONParser parser = new JSONParser();
+	
+	public ReadArticles(File filenamePath, List<String> datelistArray) throws Exception
 	{
 		String fileextension;
-		
-		// Date generation
-		DateGeneration(startDate, endDate);
+		this.datelistArray = datelistArray;
 		
 		
-//		fileextension = getFileExtension(filenamePath);
-//		if(fileextension.equalsIgnoreCase(".json")) {
-//			ReadSourceFile(filenamePath.toString());
-//		}
-	}
-	
-	private  void DateGeneration(String startDate, String endDate) throws Exception
-	{
-		Calendar cal = Calendar.getInstance();
-		String start = startDate;
-		String end = endDate;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date dBegin = sdf.parse(start);
-		Date dEnd = sdf.parse(end);
-		List<Date> lDate = findDates(dBegin, dEnd);
-		String datelist;
-		for (Date date : lDate) 
-		{
-			datelist = "";
-			datelist = sdf.format(date).toString();
+		fileextension = getFileExtension(filenamePath);
+		if(fileextension.equalsIgnoreCase(".json")) {
 			
-			datelistVec.add(datelist);
-			//System.out.println(datelist);
-		}
-	}
-	
-	private static List<Date> findDates(Date dBegin, Date dEnd) 
-	{
-		List lDate = new ArrayList();
-		lDate.add(dBegin);
-		Calendar calBegin = Calendar.getInstance();
-
-		calBegin.setTime(dBegin);
-		Calendar calEnd = Calendar.getInstance();
-
-		calEnd.setTime(dEnd);
-
-		while (dEnd.after(calBegin.getTime())) {
-
-			calBegin.add(Calendar.DAY_OF_MONTH, 1);
-			lDate.add(calBegin.getTime());
+			for(int i=0; i<datelistArray.size(); i++) {
+				dateMesCountArrayTmp.add(0);
+			}
+			
+			ReadSourceFile(filenamePath.toString());
 		}
 		
-		return lDate;
 	}
 	
 	private void ReadSourceFile(String filenamePath) throws Exception
-	{
+	{	
 		year = "";
 		month = "";
 		day = "";
+		mesCount = 0;
 		String Line = "";
 		FileReader fr = new FileReader(filenamePath);
 		BufferedReader bfr = new BufferedReader(fr);
@@ -126,7 +92,8 @@ public class ReadArticles
 			JSONObject obj = new JSONObject(strTmp);
 			if (obj.has("articles")) {
 				JSONArray jsonarray = new JSONArray(obj.get("articles").toString());
-				for (int i = 0; i < jsonarray.length(); i++) {
+				for (int i = 0; i < jsonarray.length(); i++) 
+				{
 					JSONObject articleobj = new JSONObject(jsonarray.get(i).toString());
 					if (articleobj.has("article_id")) 
 					{
@@ -143,9 +110,19 @@ public class ReadArticles
 									newDate = Time_to_String(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
 								}
 								
-								//articleDateTranslation(Time_to_String);
 							}
-						System.out.println(article_id+"	"+dateStr+"	"+newDate);	
+						
+						
+						if (articleobj.has("message_count")) {
+							JSONObject messageobj = new JSONObject(articleobj.get("message_count").toString());
+							mesCount = messageobj.getInt("all");	
+						}
+						
+//						System.out.println(article_id+"	"+dateStr+"	"+newDate+"	"+mesCount);	
+						
+						// Date Comparison 
+						DateCheck(newDate, mesCount);
+						
 					}
 				}
 			}
@@ -178,11 +155,6 @@ public class ReadArticles
         return extension;
  
     }
-	
-	private void articleDateTranslation(String input) throws Exception
-	{
-		articleDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(input);
-	}
 	
 	private void Date_Split(String dateStr)
 	{
@@ -272,6 +244,25 @@ public class ReadArticles
 		DateTools.dateToString(theDate, Resolution.MONTH);
 
 		return DateTools.dateToString(theDate, Resolution.DAY);
+	}
+	
+	private void DateCheck(String articleDate, int mesCount)
+	{
+		int temp;
+		for(int i=0; i<datelistArray.size(); i++)
+		{
+			temp = dateMesCountArrayTmp.get(i);
+			if(datelistArray.get(i).toString().trim().equalsIgnoreCase(articleDate.trim())) {
+				dateMesCountArrayTmp.set(i, temp+mesCount);
+				break;
+			}
+//			System.out.println(i+"	"+datelistArray.get(i)+"	"+mesCount);
+		}
+	}
+	
+	public List<Integer> ReturndateMesCountArrayTmp()
+	{
+		return dateMesCountArrayTmp;
 	}
 	
 }
