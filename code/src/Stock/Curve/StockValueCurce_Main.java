@@ -3,7 +3,7 @@ package Stock.Curve;
 /*
  * Get values (Main)
  * version: October 08, 2019 10:59 AM
- * Last revision: October 11, 2019 08:02 PM
+ * Last revision: October 15, 2019 06:02 AM
  * 
  * Author : Chao-Hsuan Ke
  * E-mail : phelpske.dev at gmail dot com
@@ -23,32 +23,36 @@ public class StockValueCurce_Main
 	// Articles
 	private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/Stock data/";
 	//private final String articleFolder = "/Users/phelps/data/git/DataSet/ptt/test/";
+	// Read articles
+		File folder = new File(articleFolder);
+		File[] listOfFiles = folder.listFiles();
 	// Date 
 	String startDate = "20180101";
 	String endDate = "20190731";
 	List<String> datelistArray = new ArrayList<String>();
 	List<Integer> dateMesCountArrayTmp;
 	List<Integer> dateMesCountArray = new ArrayList<Integer>();
+	List<Integer> dateArticleCountArrayTmp;
+	List<Integer> dateArticleCountArray = new ArrayList<Integer>();
 	
 	String fileextension;
 	
+	
 	public StockValueCurce_Main() throws Exception
 	{
-		File folder = new File(articleFolder);
-		File[] listOfFiles = folder.listFiles();
 		Arrays.sort(listOfFiles);
-
-		String articlenameTmp;
-		String idTmp = "";
-		String strTmp = "";
-		String authorTmp = "";
-			int authorTagIndex;
 		
-			
 		// Date generation
 		DateGeneration(startDate, endDate);
 			
-		
+		// get message count
+		//getMessageCount();
+		// get article count
+		getArticleCount();
+	}
+	
+	private void getMessageCount() throws Exception
+	{
 		String Line = "";
 		int tempCount;
 		for (File file : listOfFiles) {
@@ -57,7 +61,7 @@ public class StockValueCurce_Main
 			if (fileextension.equalsIgnoreCase(".json")) {
 				System.out.println(file);
 				// Read articles
-				ReadArticles ra = new ReadArticles(file, datelistArray);
+				ReadArticlesMessageCount ra = new ReadArticlesMessageCount(file, datelistArray);
 				dateMesCountArrayTmp = ra.ReturndateMesCountArrayTmp();
 
 				for (int i = 0; i < datelistArray.size(); i++) {
@@ -65,9 +69,7 @@ public class StockValueCurce_Main
 					//dateMesCountArrayTmp.set(i, tempCount+mesCount);
 					dateMesCountArray.set(i, tempCount + dateMesCountArrayTmp.get(i));
 				}
-
 			}
-
 		}
 		
 		
@@ -76,6 +78,34 @@ public class StockValueCurce_Main
 		for(int i=0; i<datelistArray.size(); i++)
 		{
 			System.out.println(datelistArray.get(i)+"	"+dateMesCountArray.get(i));
+		}
+	}
+	
+	private void getArticleCount() throws Exception
+	{
+		String Line = "";
+		int tempCount;
+		for (File file : listOfFiles) {
+			fileextension = getFileExtension(file);
+			
+			if (fileextension.equalsIgnoreCase(".json")) {
+				//System.out.println(file);
+				// Read articles
+				ReadArticlesCount ra = new ReadArticlesCount(file, datelistArray);
+				dateArticleCountArrayTmp = ra.ReturnArticlesCountArrayTmp();
+
+				for (int i = 0; i < datelistArray.size(); i++) {
+					tempCount = dateArticleCountArray.get(i);
+					dateArticleCountArray.set(i, tempCount + dateArticleCountArrayTmp.get(i));
+				}
+			}
+		}
+		
+		// Display
+		System.out.println("-------------------------------");
+		for(int i=0; i<datelistArray.size(); i++)
+		{
+			System.out.println(datelistArray.get(i)+"	"+dateArticleCountArray.get(i));
 		}
 	}
 	
@@ -96,6 +126,7 @@ public class StockValueCurce_Main
 			
 			datelistArray.add(datelist);
 			dateMesCountArray.add(0);
+			dateArticleCountArray.add(0);
 			//System.out.println(datelist);
 		}
 	}
