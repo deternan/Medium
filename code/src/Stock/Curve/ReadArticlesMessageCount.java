@@ -1,7 +1,7 @@
 package Stock.Curve;
 
 /*
- * Articles Parsing
+ * Articles Parsing (get Message Count)
  * version: October 09, 2019 00:09 AM
  * Last revision: October 11, 2019 07:56 PM
  * 
@@ -27,9 +27,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.json.simple.parser.JSONParser;
 
-public class ReadArticles 
+public class ReadArticlesMessageCount 
 {
-	
 	List<String> datelistArray;
 	List<Integer> dateMesCountArrayTmp = new ArrayList<Integer>();
 	
@@ -50,11 +49,10 @@ public class ReadArticles
 	// Parsing
 	JSONParser parser = new JSONParser();
 	
-	public ReadArticles(File filenamePath, List<String> datelistArray) throws Exception
+	public ReadArticlesMessageCount(File filenamePath, List<String> datelistArray) throws Exception
 	{
 		String fileextension;
 		this.datelistArray = datelistArray;
-		
 		
 		fileextension = getFileExtension(filenamePath);
 		if(fileextension.equalsIgnoreCase(".json")) {
@@ -65,7 +63,6 @@ public class ReadArticles
 			
 			ReadSourceFile(filenamePath.toString());
 		}
-		
 	}
 	
 	private void ReadSourceFile(String filenamePath) throws Exception
@@ -153,7 +150,6 @@ public class ReadArticles
         }
  
         return extension;
- 
     }
 	
 	private void Date_Split(String dateStr)
