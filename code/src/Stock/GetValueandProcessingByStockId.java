@@ -1,22 +1,9 @@
 package Stock;
-/*
- * Parser Stock value by Date
- * version: October 02, 2019 09:30 PM
- * Last revision: December 07, 2019 00:42 AM
- * 
- * Author : Chao-Hsuan Ke
- * E-mail : phelpske.dev at gmail dot com
- * 
- */
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 
 /*
  * Parser values by stock Id
  * version: November 30, 2019 09:59 PM
- * Last revision: December 07, 2019 00:10 AM
+ * Last revision: December 07, 2019 00:42 AM
  * 
  * Author : Chao-Hsuan Ke
  * E-mail : phelpske.dev at gmail dot com
@@ -38,6 +25,9 @@ import java.io.FileReader;
  * 
  */
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +44,7 @@ import com.google.gson.JsonParser;
 
 public class GetValueandProcessingByStockId 
 {
-	int sleepTime = 5200;
+	int sleepTime = 5200;	// delay timer (5.2 secs)
 	// Values source
 	private String TWSEvalueUrl = "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=";
 	private String TPEXvalueUrl = "https://www.tpex.org.tw/web/stock/aftertrading/daily_trading_info/st43_result.php?d=";
@@ -109,7 +99,7 @@ public class GetValueandProcessingByStockId
 		monthGap = getMonthGap(todayStr, specificDateStr);							// 月份差距
 		List<String> monthList = MonthIncrement(startYear + startMonth, monthGap);	// 月份列表
 		
-		// 3. 擷取收盤數值
+		// 3. 擷取該股收盤數值
 		int TWYear;
 		String TWMonthStr;
 		for(int i=0; i<monthList.size(); i++)
