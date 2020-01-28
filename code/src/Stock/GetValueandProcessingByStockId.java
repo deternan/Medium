@@ -53,8 +53,8 @@ public class GetValueandProcessingByStockId
 	// twse tpex list
 	private boolean twselist_check = false;
 	private boolean tpexlist_check = false; 
-	private String twselistFile = "/Users/phelps/Documents/github/PTT_Stock/source/TWSE.txt";
-	private String tpexlistFile = "/Users/phelps/Documents/github/PTT_Stock/source/TPEX.txt";
+	private String twselistFile = "/Users/phelps/Documents/github/PTT_Stock/source/TWSE.txt";	// 放置 TWSE list 位置
+	private String tpexlistFile = "/Users/phelps/Documents/github/PTT_Stock/source/TPEX.txt";	// 放置 TPEX list 位置
 	ArrayList twseidlist = new ArrayList();
  	ArrayList tpexidlist = new ArrayList();
  	String stockTag = "";
