@@ -2,8 +2,8 @@
 # coding=utf8
 
 '''
-Created on December 02, 2020   06:30 PM
-Last revision: December 02, 2020   06:52 PM
+Created on December 02, 2020   07:30 PM
+Last revision: December 02, 2020   10:50 PM
 author: Chao-Hsuan Ke
 
 '''
@@ -82,4 +82,23 @@ for index in idList:
 '''
 repeat word count
 '''
-print(Counter(lastWord))
+#print(Counter(lastWord))
+
+'''
+convert to dict
+'''
+# first word
+
+# last word
+d = {}
+cnt = Counter(Counter(lastWord))
+for key, value in cnt.items():
+    d[key] = value
+    #print(d[key], key)
+
+'''
+dict sort
+'''
+sort_orders = sorted(d.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
