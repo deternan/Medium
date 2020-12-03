@@ -3,7 +3,7 @@
 
 '''
 Created on December 02, 2020   07:30 PM
-Last revision: December 02, 2020   10:50 PM
+Last revision: December 03, 2020   06:52 PM
 author: Chao-Hsuan Ke
 
 '''
@@ -88,17 +88,39 @@ repeat word count
 convert to dict
 '''
 # first word
-
-# last word
-d = {}
+dstart = {}
 cnt = Counter(Counter(lastWord))
 for key, value in cnt.items():
-    d[key] = value
+    dstart[key] = value
+
+# last word
+dlast = {}
+cnt = Counter(Counter(lastWord))
+for key, value in cnt.items():
+    dlast[key] = value
     #print(d[key], key)
 
 '''
 dict sort
 '''
-sort_orders = sorted(d.items(), key=lambda x: x[1], reverse=True)
-for i in sort_orders:
-	print(i[0], i[1])
+dictItem = {}
+dictItem = dstart
+sort_orders = sorted(dictItem.items(), key=lambda x: x[1], reverse=True)
+# for i in sort_orders:
+# 	print(i[0], i[1])
+
+'''
+search & list
+'''
+inputStr = '光'
+indexCount = 0
+printStr = ''
+for index in nameList:
+    #print(index, index[:1])
+    if inputStr == index[:1]:
+        printStr = "%s (%s)" %(index, idList[indexCount])
+        print(printStr)
+        printStr = ''
+        #print(index, idList[indexCount])
+    indexCount += 1
+
