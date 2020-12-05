@@ -3,7 +3,7 @@
 
 '''
 Created on December 02, 2020   07:30 PM
-Last revision: December 04, 2020   08:36 PM
+Last revision: December 05, 2020   11:24 AM
 author: Chao-Hsuan Ke
 
 '''
@@ -29,7 +29,7 @@ removeWord = ''
 for line in f:
     #print(line[0])
     sep = line.split('\t')
-#    print(count, sep[0], sep[1])
+    #print(count, sep[0], sep[1], end='')
     idList.append(sep[0])
 
     '''
@@ -44,6 +44,7 @@ for line in f:
     removeWord.replace("\r", '')
     nameList.append(removeWord)
     #print(sep[0], len(removeWord.strip()), removeWord.strip()[-1])
+    #print(count, idList[count], nameList[count], end='')
     count += 1
 
 
@@ -116,12 +117,20 @@ search & list
 inputStr = '台'
 indexCount = 0
 printStr = ''
+printId = ''
+printName = ''
 for index in nameList:
-    #print(index, index[:1])
     if inputStr == index[:1]:
-        printStr = "%s (%s)" %(index, idList[indexCount])
-        print(printStr, end='')
+        #print(idList[indexCount], index)
+        printId = idList[indexCount]
+        printName = index
+        #printStr = "%s (%s) " % (printName, printId)
+        #printStr = "%s (%s) " %(index, idList[indexCount])
+        #printStr = "%s (%s) " % (nameList[indexCount], idList[indexCount])
+        print('('+printId+') '+printName, end='')
         printStr = ''
+        printId = ''
+        printName = ''
         #print(index, idList[indexCount])
-    indexCount += 1
 
+    indexCount +=1
