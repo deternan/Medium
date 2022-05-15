@@ -114,13 +114,14 @@ sort_orders = sorted(dictItem.items(), key=lambda x: x[1], reverse=True)
 '''
 search & list
 '''
-inputStr = '台'
+inputStr = '通'
 indexCount = 0
 printStr = ''
 printId = ''
 printName = ''
 for index in nameList:
-    if inputStr == index[:1]:
+    #if inputStr == index[:1]:       # begin word
+    if inputStr == nameList[indexCount].strip()[-1]:  # end word
         #print(idList[indexCount], index)
         printId = idList[indexCount]
         printName = index
